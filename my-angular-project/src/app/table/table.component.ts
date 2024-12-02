@@ -5,7 +5,7 @@ import { Book } from '../models/book.model';
   selector: 'app-table',
   imports: [],
   templateUrl: './table.component.html',
-  styleUrl: './table.component.css'
+  styleUrls: ['./table.component.css']
 })
 export class TableComponent {
   books: Book[] = [
