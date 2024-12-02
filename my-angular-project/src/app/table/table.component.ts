@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { DatePipe, CurrencyPipe} from '@angular/common';
 import { Book } from '../models/book.model';
 
 @Component({
   selector: 'app-table',
-  imports: [],
+  standalone: true, // Standalone-Komponente aktivieren
+  imports: [DatePipe, CurrencyPipe], // Importieren der Pipes (for ''date'' and ''currency'')
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
@@ -21,8 +23,8 @@ export class TableComponent {
       },
       genre: 'Tutorial',
       price: 29.99
-},
-{
+    },
+    {
       id: 2,
       title: 'Advanced Angular',
       publicationDate: new Date(2023, 3, 15),
@@ -34,5 +36,6 @@ export class TableComponent {
       },
       genre: 'Programming',
       price: 39.99,
-}];
+    }
+  ];
 }
