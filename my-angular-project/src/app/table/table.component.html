@@ -8,8 +8,7 @@
         <th>Price</th>
       </tr>
     </thead>
-    <tbody>
-         
+    <tbody>      
         @for (book of books;track book.id) {
             <tr> 
                 <td>{{ book.title }}</td>
@@ -19,6 +18,5 @@
                 <td>{{ book.price | currency}}</td>
             </tr>
         }    
-        
     </tbody>
   </table>
