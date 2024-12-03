@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { DatePipe, CurrencyPipe} from '@angular/common';
 import { Book } from '../models/book.model';
+import { BookFormComponent } from '../book-form/book-form.component';
 
 @Component({
   selector: 'app-table',
   standalone: true, // Standalone-Komponente aktivieren
-  imports: [DatePipe, CurrencyPipe], // Importieren der Pipes (for ''date'' and ''currency'')
+  imports: [DatePipe, CurrencyPipe, BookFormComponent], // Importieren der Pipes (for ''date'' and ''currency'')
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
@@ -38,4 +39,35 @@ export class TableComponent {
       price: 39.99,
     }
   ];
+
+  
+  selectedBook: Book | null = null; // Speichert das ausgewählte Buch
+  
+  editBook(book: Book): void {
+    this.selectedBook = book; // Speichert das Buch und öffnet das Modal
+  }
+
+  createBook(): void {
+    this.selectedBook = {
+      id: 0, // Temporär oder generisch
+      title: '',
+      publicationDate: null as any as Date,
+      author: {
+        id: 0,
+        name: '',
+        birthDate: null as any as Date,
+        nationality: '',
+      },
+      genre: '',
+      price: 0,
+    }; // Leeres Buch-Objekt
+  }
+
+  deleteBook(book: Book): void {
+    console.log('Delete book', book);
+  }
+
+  closeModal(): void {
+    this.selectedBook = null; // Schließt das Modal
+  }
 }

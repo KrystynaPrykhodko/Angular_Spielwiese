@@ -16,7 +16,21 @@
                 <td>{{ book.publicationDate | date: 'mediumDate' }}</td>
                 <td>{{ book.genre || 'N/A' }}</td>
                 <td>{{ book.price | currency}}</td>
+                <td>
+                    <button (click)="editBook(book)">Edit</button>
+                    <button (click)="createBook()">Create</button>
+                    <button (click)="deleteBook(book)">Delete</button>
+                </td>
             </tr>
-        }    
+        }   
     </tbody>
   </table>
+
+<!-- PopUp / Modal -->
+@if (selectedBook) {
+<div class="modal" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc;">
+    <app-book-form [book]="selectedBook"></app-book-form>
+    <button (click)="closeModal()">Close</button>
+</div>
+}
+ 
