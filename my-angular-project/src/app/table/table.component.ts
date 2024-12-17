@@ -1,73 +1,65 @@
-import { Component } from '@angular/core';
-import { DatePipe, CurrencyPipe} from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { DatePipe, CurrencyPipe, CommonModule } from '@angular/common';
 import { Book } from '../models/book.model';
 import { BookFormComponent } from '../book-form/book-form.component';
+import { AppState } from '../store/app.state';
+import * as BooksActions from '../store/books/books.actions';
+import { selectAllBooks, selectCurrentBook } from '../store/books/books.selectors';
 
 @Component({
   selector: 'app-table',
-  standalone: true, // Standalone-Komponente aktivieren
-  imports: [DatePipe, CurrencyPipe, BookFormComponent], // Importieren der Pipes (for ''date'' and ''currency'')
+  standalone: true,
+  imports: [CommonModule, DatePipe, CurrencyPipe, BookFormComponent],
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.css']
+  styleUrls: ['./table.component.css'],
 })
-export class TableComponent {
-  books: Book[] = [
-    {
-      id: 1,
-      title: 'Angular for Beginners',
-      publicationDate: new Date('2020-01-01'),
-      author: {
-        id: 1, 
-        name: 'Max Mustermann', 
-        birthDate: new Date('1990-01-01'), 
-        nationality: 'Deutsch'
-      },
-      genre: 'Tutorial',
-      price: 29.99
-    },
-    {
-      id: 2,
-      title: 'Advanced Angular',
-      publicationDate: new Date(2023, 3, 15),
-      author: {
-        id: 2,
-        name: 'Jane Smith',
-        birthDate: new Date(1975, 8, 14),
-        nationality: 'US',
-      },
-      genre: 'Programming',
-      price: 39.99,
-    }
-  ];
+export class TableComponent implements OnInit {
+  private store = inject(Store<AppState>);
 
-  
-  selectedBook: Book | null = null; // Speichert das ausgewählte Buch
-  
-  editBook(book: Book): void {
-    this.selectedBook = book; // Speichert das Buch und öffnet das Modal
+  books$ = this.store.select(selectAllBooks); // Bücher aus dem Store
+  selectedBook$ = this.store.select(selectCurrentBook); // Aktuell ausgewähltes Buch aus dem Store
+
+  ngOnInit(): void {
+    // Lade Bücher beim Start der Komponente
+    this.store.dispatch(BooksActions.loadBooks());
   }
 
+  // Buch editieren (Dispatch zum Setzen des ausgewählten Buches)
+  editBook(book: Book): void {
+    this.store.dispatch(BooksActions.selectBook({ book }));
+  }
+
+  // Neues Buch erstellen
   createBook(): void {
-    this.selectedBook = {
-      id: 0, // Temporär oder generisch
+    const newBook: Book = {
+      id: 0, // Temporäre ID
       title: '',
-      publicationDate: null as any as Date,
+      publicationDate: new Date(),
       author: {
         id: 0,
         name: '',
-        birthDate: null as any as Date,
+        birthDate: new Date(),
         nationality: '',
       },
       genre: '',
       price: 0,
-    }; // Leeres Buch-Objekt
+    };
+    this.store.dispatch(BooksActions.selectBook({ book: newBook }));
   }
 
+  // Buch löschen
   deleteBook(book: Book): void {
-    console.log('Delete book', book);
+    this.store.dispatch(BooksActions.deleteBook({ bookId: book.id }));
   }
 
+  // Modal schließen
   closeModal(): void {
-    this.selectedBook = null; // Schließt das Modal
+    this.store.dispatch(BooksActions.selectBook({ book: null }));
+  }
+
+  // trackBy-Funktion für *ngFor zur Optimierung
+  trackByBookId(index: number, book: Book): number {
+    return book.id;
   }
 }
