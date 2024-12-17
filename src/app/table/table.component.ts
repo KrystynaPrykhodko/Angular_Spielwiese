@@ -5,7 +5,7 @@ import { Book } from '../models/book.model';
 import { AppState } from '../store/app.state';
 import * as BooksActions from '../store/books/books.actions';
 import { selectAllBooks, selectCurrentBook } from '../store/books/books.selectors';
-import { BookFormComponent } from '../book-form/book-form.component_';
+import { BookFormComponent } from '../book-form/book-form.component';
 
 @Component({
   selector: 'app-table',
