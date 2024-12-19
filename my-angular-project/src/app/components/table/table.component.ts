@@ -1,11 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DatePipe, CurrencyPipe, CommonModule } from '@angular/common';
-import { Book } from '../models/book.model';
+import { Book } from '../../models/book.model';
 import { BookFormComponent } from '../book-form/book-form.component';
-import { AppState } from '../store/app.state';
-import * as BooksActions from '../store/books/books.actions';
-import { selectAllBooks, selectCurrentBook } from '../store/books/books.selectors';
+import { AppState } from '../../store/app.state';
+import * as BooksActions from '../../store/books/books.actions';
+import { selectAllBooks, selectCurrentBook } from '../../store/books/books.selectors';
 
 @Component({
   selector: 'app-table',

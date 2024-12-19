@@ -1,9 +1,9 @@
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { AppState } from '../store/app.state';
-import * as BooksActions from '../store/books/books.actions';
-import { Book } from '../models/book.model';
+import { AppState } from '../../store/app.state';
+import * as BooksActions from '../../store/books/books.actions';
+import { Book } from '../../models/book.model';
 
 @Component({
   selector: 'app-book-form',
@@ -30,7 +30,7 @@ export class BookFormComponent implements OnChanges {
     price: new FormControl(0),
   });
 
-  // Aktualisiert das Formular, wenn die Eingabe (`book`) sich ändert
+  // Aktualisiert das Formular, wenn die Eingabe (`book`) sich ändert -> muss zu NgOnInit verändern
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['book'] && this.book) {
       this.bookForm.patchValue({
